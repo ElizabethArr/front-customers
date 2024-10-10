@@ -6,6 +6,7 @@ import RegisterForm from "./RegisterForm.tsx";
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
+  
 }
 
 const style = {

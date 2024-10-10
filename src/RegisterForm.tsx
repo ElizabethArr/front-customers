@@ -13,6 +13,7 @@ interface User {
 }
 interface RegisterFormProps {
   onSaved: () => void;
+  
 }
 
 const RegisterForm = (props: RegisterFormProps) => {
