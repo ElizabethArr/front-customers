@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./RegisterForm.css";
 
 interface User {
@@ -11,13 +11,31 @@ interface User {
   password: string;
   zip_code: string;
 }
-interface RegisterFormProps {
-  onSaved: (data: User) => void;
-  
+
+// Define la interfaz Customer si no está definida en otro lugar
+interface Customer {
+  id: number;
+  name: string;
+  last_name: string;
+  email: string;
+  personal_phone: string;
+  contact_phone: string;
+  birth_date: string;
+  zip_code: string;
+  password?: string; // La contraseña es opcional
 }
 
+
+interface RegisterFormProps {
+  customer?: Customer | null;  
+  onSaved: (customerData: any) => void; // Función que se ejecuta al guardar el formulario 
+  };
+ 
+
 const RegisterForm = (props: RegisterFormProps) => {
-  const {onSaved} = props;
+  const  { customer, onSaved } = props;
+
+
   const [formData, setFormData] = useState<User>({
     name: "",
     lastName: "",
@@ -29,6 +47,22 @@ const RegisterForm = (props: RegisterFormProps) => {
     zip_code: "",
   });
 
+  // Efecto para cargar los datos del cliente en el formulario si está en modo edición
+  useEffect(() => {
+    if (customer) {
+      setFormData({
+        name: customer.name,
+        lastName: customer.last_name,
+        email: customer.email,
+        personal_phone: customer.personal_phone,
+        contact_phone: customer.contact_phone,
+        dateOfBirth: customer.birth_date,
+        password: customer.password || "",
+        zip_code: customer.zip_code,
+      });
+    }
+  }, [customer]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -38,6 +72,8 @@ const RegisterForm = (props: RegisterFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+
 
     // Validaciones
     const nameParts = formData.name.trim().split(" ");
@@ -87,9 +123,13 @@ const RegisterForm = (props: RegisterFormProps) => {
     };
 
     try {
-      // Hacer la solicitud POST a la API
-      const response = await fetch("http://localhost:8000/api/customers", {
-        method: "POST",
+      const method = customer ? "PUT" : "POST"; // Usar PUT para editar, POST para crear
+      const url = customer
+        ? `http://localhost:8000/api/customers/${customer.id}`
+        : "http://localhost:8000/api/customers";
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -101,13 +141,12 @@ const RegisterForm = (props: RegisterFormProps) => {
       }
 
       const result = await response.json();
-    onSaved(result); // Pasa los datos guardados a la función onSaved
-    alert("Registro exitoso");
-  } catch (error) {
-    console.error("Error al realizar la solicitud:", error);
-    alert("Hubo un error al registrar los datos.");
-  }
-  
+      onSaved(result); // Pasa los datos guardados a la función onSaved
+      alert(customer ? "Actualización exitosa" : "Registro exitoso");
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+      alert("Hubo un error al registrar los datos.");
+    }
   };
 
   return (
@@ -233,7 +272,7 @@ const RegisterForm = (props: RegisterFormProps) => {
       </div>
 
       <button type="submit" className="form-button">
-        Save
+      {customer ? "Save Changes" : "Save"}
       </button>
     </form>
   );

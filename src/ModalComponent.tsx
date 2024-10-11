@@ -6,7 +6,7 @@ import RegisterForm from "./RegisterForm.tsx";
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
-  customer?: {
+  customer?: {  // Cliente opcional para edición
     id: number;
     name: string;
     last_name: string;
@@ -34,7 +34,7 @@ const style = {
   overflowY: "auto", // Habilitamos el scroll si el contenido es demasiado largo
 };
 
-const ModalComponent: React.FC<ModalProps> = ({ open, handleClose }) => {
+const ModalComponent: React.FC<ModalProps> = ({ open, handleClose, customer, handleSave }) => { 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
@@ -47,10 +47,10 @@ const ModalComponent: React.FC<ModalProps> = ({ open, handleClose }) => {
             fontWeight: "bold",
           }}
         >
-          Add Customer
+         {customer ? "Edit Customer" : "Add Customer"}
         </Typography>
 
-        <RegisterForm onSaved={handleClose} />
+        <RegisterForm onSaved={handleSave} customer={customer} />
         <div style={{ textAlign: "center", marginTop: "20px" }}>
           <button 
             onClick={handleClose} 
