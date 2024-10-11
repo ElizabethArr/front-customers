@@ -42,21 +42,6 @@ const CustomerTable: React.FC = () => {
     }
   };
 
-  // // Función para editar un cliente
-  // const handleEdit = (customer: Customer) => {
-  //   setSelectedCustomer(customer);  // Seleccionamos el cliente para editar
-  //   handleOpen();  // Abrimos el modal
-  // };
-
-  // if (loading) {
-  //   return <div>Cargando...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
-
-
   // Función para eliminar un cliente
   const handleDelete = async (id: number) => {
     try {
@@ -72,8 +57,6 @@ const CustomerTable: React.FC = () => {
       setError("Hubo un problema al eliminar el cliente.");
     }
   };
-
-  
 
 
   // useEffect para llamar a la API cuando el componente se monta
@@ -100,8 +83,10 @@ const CustomerTable: React.FC = () => {
   </Button>
 </div>
 
-      {/* Llamada al componente modal */}
-      <ModalComponent open={open} handleClose={handleClose} />
+      
+      <ModalComponent open={open} handleClose={handleClose} handleSave={function (customer: any): void {
+        throw new Error("Function not implemented.");
+      } } />
 
       <table className="customer-table">
         <thead>
@@ -129,15 +114,14 @@ const CustomerTable: React.FC = () => {
               <td>{customer.birth_date}</td>
               <td>{customer.zip_code}</td>
               <td>
-              {/* <Button
+              <Button
                   variant="contained"
                   color="secondary"
-                
-                  onClick={() => handleEdit(customer)}
+                  // onClick={() => handleEdit(customer)}
                   style={{ marginRight: '5px' }}
                 >
                   Edit
-                </Button> */}
+                </Button>
                 <Button
                   variant="contained"
                   color="error"

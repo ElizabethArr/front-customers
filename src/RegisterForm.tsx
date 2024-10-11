@@ -12,7 +12,7 @@ interface User {
   zip_code: string;
 }
 interface RegisterFormProps {
-  onSaved: () => void;
+  onSaved: (data: User) => void;
   
 }
 
@@ -101,13 +101,13 @@ const RegisterForm = (props: RegisterFormProps) => {
       }
 
       const result = await response.json();
-      onSaved()
-      alert("Registro exitoso");
-      
-    } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
-      alert("Hubo un error al registrar los datos.");
-    }
+    onSaved(result); // Pasa los datos guardados a la función onSaved
+    alert("Registro exitoso");
+  } catch (error) {
+    console.error("Error al realizar la solicitud:", error);
+    alert("Hubo un error al registrar los datos.");
+  }
+  
   };
 
   return (

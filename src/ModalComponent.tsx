@@ -6,8 +6,20 @@ import RegisterForm from "./RegisterForm.tsx";
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
-  
+  customer?: {
+    id: number;
+    name: string;
+    last_name: string;
+    email: string;
+    birth_date: string;
+    personal_phone: string;
+    contact_phone: string;
+    zip_code: string;
+  } | null; // Acepta un cliente opcional para edición
+  handleSave: (customer: any) => void; // Función para guardar el cliente
 }
+  
+
 
 const style = {
   position: "absolute" as "absolute",
