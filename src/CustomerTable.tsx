@@ -96,12 +96,12 @@ const CustomerTable = () => {
 
   return (
     <div>
-      <h1>Clientes</h1>
+      <h1>Customers</h1>
 
       {/* Botón para abrir el modal para agregar */}
       <div style={{ width: "80%", margin: "0 auto 10px auto", textAlign: "right" }}>
         <Button variant="contained" color="primary" onClick={handleAddCustomer}>
-          Agregar Cliente
+          Add Customer
         </Button>
       </div>
 
