@@ -117,14 +117,14 @@ const CustomerTable = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
+            <th>Name</th>
+            <th>Last Name</th>
             <th>Email</th>
-            <th>Teléfono Personal</th>
-            <th>Teléfono de Contacto</th>
-            <th>Fecha de Nacimiento</th>
-            <th>Código Postal</th>
-            <th>Acciones</th>
+            <th>Personal Phone</th>
+            <th>Contact Phone</th>
+            <th>Birth Date</th>
+            <th>Zip Code</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -139,21 +139,25 @@ const CustomerTable = () => {
               <td>{customer.birth_date}</td>
               <td>{customer.zip_code}</td>
               <td>
+              <div className="action-buttons">
                 <Button
                   variant="contained"
                   color="secondary"
+                 
                   onClick={() => handleEditCustomer(customer)}
-                  style={{ marginRight: '5px' }}
+                 
                 >
-                  Editar
+                  Edit
                 </Button>
                 <Button
                   variant="contained"
                   color="error"
+                  
                   onClick={() => handleDelete(customer.id)}
                 >
-                  Eliminar
+                  Delete
                 </Button>
+                </div>
               </td>
             </tr>
           ))}
