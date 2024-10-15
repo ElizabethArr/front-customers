@@ -3,7 +3,7 @@ import { Button, Modal, Box, Typography } from "@mui/material";
 import ModalComponent from './ModalComponent.tsx';
 import "./CustomerTable.css";
 
-// Interfaz para definir la estructura de un cliente
+
 interface Customer {
   id: number;
   name: string;
@@ -15,10 +15,10 @@ interface Customer {
   zip_code: string;
 }
 
-const CustomerTable = () => {
+const CustomerTable: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null); // Para editar un cliente
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,34 +43,76 @@ const CustomerTable = () => {
 
   // Abrir el modal para agregar un nuevo cliente
   const handleAddCustomer = () => {
-    setSelectedCustomer(null); // No se selecciona cliente para agregar uno nuevo
+    setSelectedCustomer(null); 
     setOpenModal(true);
   };
 
-  // Abrir el modal para editar un cliente existente
+ 
   const handleEditCustomer = (customer: Customer) => {
-    setSelectedCustomer(customer); // Cargar el cliente seleccionado para editar
+    setSelectedCustomer(customer); 
     setOpenModal(true);
   };
 
-  // Función que se ejecuta cuando se guardan los datos desde el formulario
-  const handleSaveCustomer = (savedCustomer: Customer) => {
-    setOpenModal(false);
+  
+  // const handleSaveCustomer = (savedCustomer: Customer) => {
+  //   setOpenModal(false);
 
-    if (selectedCustomer) {
-      // Si es una edición, actualizar la tabla
-      setCustomers((prevCustomers) =>
-        prevCustomers.map((cust) =>
-          cust.id === savedCustomer.id ? savedCustomer : cust
-        )
-      );
-    } else {
-      // Si es un nuevo cliente, agregarlo a la tabla
-      setCustomers((prevCustomers) => [...prevCustomers, savedCustomer]);
-    }
-  };
+  //   if (selectedCustomer) {
+      
+  //     setCustomers((prevCustomers) =>
+  //       prevCustomers.map((cust) =>
+  //         cust.id === savedCustomer.id ? savedCustomer : cust
+  //       )
+  //     );
+  //   } else {
+     
+  //     setCustomers((prevCustomers) => [...prevCustomers, savedCustomer]);
+  //   }
+  // };
+
+
+
 
   // Función para eliminar un cliente
+  
+  
+ // Función que se ejecuta cuando se guardan los datos desde el formulario
+ const handleSaveCustomer = async (savedCustomer: Customer) => {
+  setOpenModal(false);
+
+  // Si es una edición, envía los datos al servidor para actualizar
+  if (selectedCustomer) {
+    try {
+      await fetch(`http://localhost:8000/api/customers/${savedCustomer.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(savedCustomer),
+      });
+      fetchCustomers(); // Recargar la lista de clientes desde el servidor
+    } catch (error) {
+      console.error("Error updating customer:", error);
+    }
+  } else {
+    // Si es un nuevo cliente, envía los datos al servidor para crear uno nuevo
+    try {
+      await fetch("http://localhost:8000/api/customers", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(savedCustomer),
+      });
+      fetchCustomers(); // Recargar la lista de clientes desde el servidor
+    } catch (error) {
+      console.error("Error adding customer:", error);
+    }
+  }
+};
+
+
+  
   const handleDelete = async (id: number) => {
     try {
       const response = await fetch(`http://localhost:8000/api/customers/${id}`, {
@@ -98,14 +140,14 @@ const CustomerTable = () => {
     <div>
       <h1>Customers</h1>
 
-      {/* Botón para abrir el modal para agregar */}
+      
       <div style={{ width: "80%", margin: "0 auto 10px auto", textAlign: "right" }}>
         <Button variant="contained" color="primary" onClick={handleAddCustomer}>
           Add Customer
         </Button>
       </div>
 
-      {/* Modal para agregar/editar cliente */}
+     
       <ModalComponent
         open={openModal}
         handleClose={() => setOpenModal(false)}

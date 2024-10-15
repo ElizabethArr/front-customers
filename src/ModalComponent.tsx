@@ -15,8 +15,8 @@ interface ModalProps {
     personal_phone: string;
     contact_phone: string;
     zip_code: string;
-  } | null; // Acepta un cliente opcional para edición
-  handleSave: (customer: any) => void; // Función para guardar el cliente
+  } | null; 
+  handleSave: (customer: any) => void; 
 }
   
 
@@ -26,12 +26,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "30%", // Ajustamos el ancho a 80% para darle más espacio al formulario
-  maxHeight: "90vh", // Altura máxima del modal al 90% de la pantalla
+  width: "30%", 
+  maxHeight: "90vh", 
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
-  overflowY: "auto", // Habilitamos el scroll si el contenido es demasiado largo
+  overflowY: "auto", 
 };
 
 const ModalComponent: React.FC<ModalProps> = ({ open, handleClose, customer, handleSave }) => { 

@@ -12,7 +12,7 @@ interface User {
   zip_code: string;
 }
 
-// Define la interfaz Customer si no está definida en otro lugar
+
 interface Customer {
   id: number;
   name: string;
@@ -22,13 +22,13 @@ interface Customer {
   contact_phone: string;
   birth_date: string;
   zip_code: string;
-  password?: string; // La contraseña es opcional
+  password?: string; 
 }
 
 
 interface RegisterFormProps {
   customer?: Customer | null;  
-  onSaved: (customerData: any) => void; // Función que se ejecuta al guardar el formulario 
+  onSaved: (customerData: any) => void; 
   };
  
 
@@ -47,7 +47,7 @@ const RegisterForm = (props: RegisterFormProps) => {
     zip_code: "",
   });
 
-  // Efecto para cargar los datos del cliente en el formulario si está en modo edición
+  
   useEffect(() => {
     if (customer) {
       setFormData({
@@ -123,7 +123,7 @@ const RegisterForm = (props: RegisterFormProps) => {
     };
 
     try {
-      const method = customer ? "PUT" : "POST"; // Usar PUT para editar, POST para crear
+      const method = customer ? "PUT" : "POST"; 
       const url = customer
         ? `http://localhost:8000/api/customers/${customer.id}`
         : "http://localhost:8000/api/customers";
